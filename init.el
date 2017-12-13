@@ -1,12 +1,10 @@
-;; init.el --- Emacs configuration
-
 ;; INSTALL PACKAGES
 ;; --------------------------------------
 (require 'package)
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
-(add-to-list 'load-path "~/.emacs.d/load_path/")
+(add-to-list 'load-path "~/.emacs.d/load_path/fill-column-indicator")
 
 (package-initialize)
 
@@ -32,11 +30,11 @@
  '(whitespace-display-mappings
    (quote
     ((space-mark 32
-		 [183]
-		 [46])
+         [183]
+         [46])
      (tab-mark 9
-	       [187 9]
-	       [92 9])))))
+           [187 9]
+           [92 9])))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
