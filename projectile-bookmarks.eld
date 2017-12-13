@@ -1,1 +1,0 @@
-("~/projects/devolate/pam/" "~/projects/devolate/hotlanta/" "~/projects/devolate/")
