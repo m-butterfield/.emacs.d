@@ -4,7 +4,6 @@
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
-
 (package-initialize)
 
 (when (not package-archive-contents)
@@ -20,18 +19,14 @@
       (package-install package)))
       myPackages)
 
-;; FCI aka ruler at column 80
-(add-to-list 'load-path "~/.emacs.d/load_path/fill-column-indicator")
-(require 'fill-column-indicator)
-(add-hook 'python-mode-hook 'fci-mode)
-(setq fci-rule-column 79)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (go-mode projectile- fiplr magit evil ##)))
+ '(package-selected-packages
+   (quote
+    (fill-column-indicator go-mode projectile- fiplr magit evil ##)))
  '(whitespace-display-mappings
    (quote
     ((space-mark 32
@@ -87,3 +82,8 @@
 (setq mouse-wheel-progressive-speed nil)
 
 (projectile-mode t)
+
+;; FCI aka ruler at column 80
+(require 'fill-column-indicator)
+(add-hook 'python-mode-hook 'fci-mode)
+(setq fci-rule-column 79)
