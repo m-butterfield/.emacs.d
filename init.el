@@ -4,7 +4,6 @@
 
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
-(add-to-list 'load-path "~/.emacs.d/load_path/fill-column-indicator")
 
 (package-initialize)
 
@@ -20,6 +19,18 @@
     (unless (package-installed-p package)
       (package-install package)))
       myPackages)
+
+;; FCI aka ruler at column 80
+(add-to-list 'load-path "~/.emacs.d/load_path/fill-column-indicator")
+(require 'fill-column-indicator)
+(define-globalized-minor-mode global-fci-mode fci-mode
+  (lambda ()
+    (if (and
+         (not (string-match "^\*.*\*$" (buffer-name)))
+         (not (eq major-mode 'dired-mode)))
+        (fci-mode 1))))
+(global-fci-mode 1)
+(setq fci-rule-column 79)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -49,7 +60,7 @@
 ;; BASIC CUSTOMIZATION
 ;; --------------------------------------
 
-(setq inhibit-startup-message t) ;; hide the startup message
+; (setq inhibit-startup-message t) ;; hide the startup message
 (load-theme 'material t) ;; load material theme
 (global-linum-mode t) ;; enable line numbers globally
 
@@ -61,8 +72,6 @@
 
 (global-whitespace-mode 1)
 
-
-
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
@@ -70,7 +79,12 @@
                             (files ("*.jpg" "*.png" "*.zip" "*~"))))
 
 (global-set-key (kbd "C-x f") 'fiplr-find-file)
-(require 'fill-column-indicator)
 
 (with-eval-after-load 'evil
     (defalias #'forward-evil-word #'forward-evil-symbol))
+
+;; for smooth scrolling and disabling the automatical recentering of emacs when moving the cursor
+(setq-default scroll-margin 1
+ scroll-conservatively 0
+ scroll-up-aggressively 0.01
+ scroll-down-aggressively 0.01)
