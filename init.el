@@ -23,13 +23,7 @@
 ;; FCI aka ruler at column 80
 (add-to-list 'load-path "~/.emacs.d/load_path/fill-column-indicator")
 (require 'fill-column-indicator)
-(define-globalized-minor-mode global-fci-mode fci-mode
-  (lambda ()
-    (if (and
-         (not (string-match "^\*.*\*$" (buffer-name)))
-         (not (eq major-mode 'dired-mode)))
-        (fci-mode 1))))
-(global-fci-mode 1)
+(add-hook 'python-mode-hook 'fci-mode)
 (setq fci-rule-column 79)
 
 (custom-set-variables
@@ -37,15 +31,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (fiplr magit evil ##)))
+ '(package-selected-packages (quote (projectile- fiplr magit evil ##)))
  '(whitespace-display-mappings
    (quote
     ((space-mark 32
-         [183]
-         [46])
+		 [183]
+		 [46])
      (tab-mark 9
-           [187 9]
-           [92 9])))))
+	       [187 9]
+	       [92 9])))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -83,10 +77,13 @@
 (with-eval-after-load 'evil
     (defalias #'forward-evil-word #'forward-evil-symbol))
 
-;; for smooth scrolling and disabling the automatical recentering of emacs when moving the cursor
+;; for smooth scrolling and disabling the automatical recentering of emacs when
+;; moving the cursor
 (setq-default scroll-margin 1
  scroll-conservatively 0
  scroll-up-aggressively 0.01
  scroll-down-aggressively 0.01)
 (setq mouse-wheel-scroll-amount '(3))
 (setq mouse-wheel-progressive-speed nil)
+
+(projectile-mode t)
