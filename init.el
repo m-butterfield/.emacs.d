@@ -24,6 +24,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(elpy-project-root "~/projects/devolate/hotlanta")
  '(package-selected-packages
    (quote
     (fill-column-indicator go-mode projectile- fiplr magit evil ##)))
@@ -80,7 +81,7 @@
 
 ;; FCI aka ruler at column 80
 (require 'fill-column-indicator)
-(add-hook 'python-mode-hook 'fci-mode)
+;(add-hook 'python-mode-hook 'fci-mode)
 (setq fci-rule-column 79)
 
 ;; disable FCI when autocomplete is active
@@ -98,3 +99,5 @@
 
 ;; Turn off scroll bars
 ;; (scroll-bar-mode -1)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
