@@ -27,14 +27,9 @@
  '(package-selected-packages
    (quote
     (fill-column-indicator go-mode projectile- fiplr magit evil ##)))
- '(whitespace-display-mappings
+ '(whitespace-style
    (quote
-    ((space-mark 32
-		 [183]
-		 [46])
-     (tab-mark 9
-	       [187 9]
-	       [92 9])))))
+    (face trailing tabs spaces indentation space-after-tab space-before-tab space-mark tab-mark))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -87,3 +82,19 @@
 (require 'fill-column-indicator)
 (add-hook 'python-mode-hook 'fci-mode)
 (setq fci-rule-column 79)
+
+;; disable FCI when autocomplete is active
+(defvar sanityinc/fci-mode-suppressed nil)
+(defadvice popup-create (before suppress-fci-mode activate)
+  "Suspend fci-mode while popups are visible"
+  (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-mode)
+  (when fci-mode
+    (turn-off-fci-mode)))
+(defadvice popup-delete (after restore-fci-mode activate)
+  "Restore fci-mode when all popups have closed"
+  (when (and (not popup-instances) sanityinc/fci-mode-suppressed)
+    (setq sanityinc/fci-mode-suppressed nil)
+    (turn-on-fci-mode)))
+
+;; Turn off scroll bars
+;; (scroll-bar-mode -1)
