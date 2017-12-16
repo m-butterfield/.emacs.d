@@ -27,7 +27,7 @@
  '(elpy-project-root "~/projects/devolate/hotlanta")
  '(package-selected-packages
    (quote
-    (fill-column-indicator go-mode projectile- fiplr magit evil ##)))
+    (dot-mode fill-column-indicator go-mode projectile- fiplr magit evil ##)))
  '(whitespace-style
    (quote
     (face trailing tabs spaces indentation space-after-tab space-before-tab space-mark tab-mark))))
@@ -39,8 +39,8 @@
  )
 
 ; Use evil mode
-(require 'evil)
-(evil-mode t)
+;; (require 'evil)
+;; (evil-mode t)
 
 ;; BASIC CUSTOMIZATION
 ;; --------------------------------------
@@ -65,8 +65,8 @@
 
 (global-set-key (kbd "C-x f") 'fiplr-find-file)
 
-(with-eval-after-load 'evil
-    (defalias #'forward-evil-word #'forward-evil-symbol))
+;; (with-eval-after-load 'evil
+;;     (defalias #'forward-evil-word #'forward-evil-symbol))
 
 ;; for smooth scrolling and disabling the automatical recentering of emacs when
 ;; moving the cursor
@@ -98,6 +98,37 @@
     (turn-on-fci-mode)))
 
 ;; Turn off scroll bars
-;; (scroll-bar-mode -1)
+(scroll-bar-mode -1)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(pyvenv-activate "~/.virtualenvs/tradr")
+;; (setq elpy-rpc-backend "jedi")
+
+ ; vi `.' command emulation
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+(autoload 'dot-mode "dot-mode" nil t)
+(global-set-key [(control ?.)] (lambda () (interactive) (dot-mode 1)
+                                  (message "Dot mode activated.")))
+(defun copy-line (arg)
+  "Copy lines (as many as prefix argument) in the kill ring.
+    Ease of use features:
+    - Move to start of next line.
+    - Appends the copy on sequential calls.
+    - Use newline as last char even on the last line of the buffer.
+    - If region is active, copy its lines."
+  (interactive "p")
+  (let ((beg (line-beginning-position))
+        (end (line-end-position arg)))
+    (when mark-active
+      (if (> (point) (mark))
+          (setq beg (save-excursion (goto-char (mark)) (line-beginning-position)))
+        (setq end (save-excursion (goto-char (mark)) (line-end-position)))))
+    (if (eq last-command 'copy-line)
+        (kill-append (buffer-substring beg end) (< end beg))
+      (kill-ring-save beg end)))
+  (kill-append "\n" nil)
+  (beginning-of-line (or (and arg (1+ arg)) 2))
+  (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
+
+(global-set-key "\C-c\C-k" 'copy-line)
