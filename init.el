@@ -102,7 +102,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(pyvenv-activate "~/.virtualenvs/tradr")
+;; (pyvenv-activate "~/.virtualenvs/tradr")
 ;; (setq elpy-rpc-backend "jedi")
 
  ; vi `.' command emulation
@@ -132,3 +132,6 @@
   (if (and arg (not (= 1 arg))) (message "%d lines copied" arg)))
 
 (global-set-key "\C-c\C-k" 'copy-line)
+
+(when (string= system-type "darwin")
+  (setq dired-use-ls-dired nil))
