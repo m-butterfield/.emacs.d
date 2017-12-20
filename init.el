@@ -27,7 +27,7 @@
  '(elpy-project-root "~/projects/devolate/hotlanta")
  '(package-selected-packages
    (quote
-    (dot-mode fill-column-indicator go-mode projectile- fiplr magit evil ##)))
+    (dot-mode go-mode projectile fiplr magit evil ##)))
  '(whitespace-style
    (quote
     (face trailing tabs spaces indentation space-after-tab space-before-tab space-mark tab-mark))))
@@ -78,24 +78,6 @@
 (setq mouse-wheel-progressive-speed nil)
 
 (projectile-mode t)
-
-;; FCI aka ruler at column 80
-(require 'fill-column-indicator)
-;(add-hook 'python-mode-hook 'fci-mode)
-(setq fci-rule-column 79)
-
-;; disable FCI when autocomplete is active
-(defvar sanityinc/fci-mode-suppressed nil)
-(defadvice popup-create (before suppress-fci-mode activate)
-  "Suspend fci-mode while popups are visible"
-  (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-mode)
-  (when fci-mode
-    (turn-off-fci-mode)))
-(defadvice popup-delete (after restore-fci-mode activate)
-  "Restore fci-mode when all popups have closed"
-  (when (and (not popup-instances) sanityinc/fci-mode-suppressed)
-    (setq sanityinc/fci-mode-suppressed nil)
-    (turn-on-fci-mode)))
 
 ;; Turn off scroll bars
 (scroll-bar-mode -1)
